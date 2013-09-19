@@ -30,10 +30,12 @@
     
     <div class="container" ng-controller="VisionCtrl">
       <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6">
+          <h4>Before</h4>
           <img id="original" src="static/images/new_image51.png.png">
         </div>
-        <div class="col-6">
+        <div class="col-lg-6">
+          <h4>After</h4>
           <canvas id="myCanvas">
             Your browser does not support the HTML5 canvas tag.
           </canvas>
@@ -43,8 +45,7 @@
       
       <div class="row">
         <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
-        <input type="submit" onclick="submit()" />
-        <button ng-click="process()" class="btn btn-primary">Process Image</button>
+        <button ng-click="process()" onclick="submit()" class="btn btn-primary">Process Image</button>
       </div>
     </div>
 
