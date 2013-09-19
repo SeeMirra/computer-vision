@@ -12,8 +12,8 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 }
 
 var submit = function() {
-  var code_preview = document.getElementById('code_preview');
-  var algo_code = code_preview.value;
+  var code_preview = document.getElementById('afterMe');
+  var algo_code = ace.edit("code_preview").getValue();
 
   var code_runner = document.getElementById('code_runner'); 
 
@@ -26,7 +26,7 @@ var submit = function() {
   var code = document.createTextNode(algo_code);
   code_runner.appendChild(code);
 
-  document.body.insertBefore(code_runner, code_preview);
+  document.body.insertBefore(code_runner, code_preview.nextSibling);
 }
 
 var run_algo = function(algo_fn) {
