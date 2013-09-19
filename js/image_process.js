@@ -1,3 +1,5 @@
+// Currently unused
+
 var img;
 
 Element.prototype.remove = function() {
