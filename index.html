@@ -1,62 +1,67 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      #original {
-        /* width: 30%; */
-      }
-
-      #code_preview {
-        height: 400px;
-        width: 800px;
-      }
-    </style>
-
+    <title>Shere Car Challenge - Prototype</title>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/computervision.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
+  <body ng-app="computerVision">
+    <nav class="navbar navbar-default" role="navigation">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">ShereCar</a>
+      </div>
 
-    <div ng-app="computerVision" ng-controller="AceCtrl">
-      <img id="original" src="static/images/new_image51.png.png">
-
-      <canvas id="myCanvas">
-      Your browser does not support the HTML5 canvas tag.
-      </canvas>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+    
+    <div class="container" ng-controller="VisionCtrl">
+      <div class="row">
+        <div class="col-6">
+          <img id="original" src="static/images/new_image51.png.png">
+        </div>
+        <div class="col-6">
+          <canvas id="myCanvas">
+            Your browser does not support the HTML5 canvas tag.
+          </canvas>
+        </div>
+      </div>
       <br />
-      <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
-
-      <input type="submit" onclick="submit()" />
+      
+      <div class="row">
+        <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
+        <input type="submit" onclick="submit()" />
+        <button ng-click="process()" class="btn btn-primary">Process Image</button>
+      </div>
     </div>
-
-
-    <!-- Self Driving Vehicle -->
-    <script src="./js/image_process.js"></script>
 
     <!-- AngularJS --> 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
-    <script src="./js/ui-ace.min.js"></script>
+    <script src="./lib/ui-ace.min.js"></script>
 
     <!-- AceJS -->
-    <script src="./js/ace/ace.js"></script>
+    <script src="./lib/ace/ace.js"></script>
 
     <!-- Firebase -->
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
-
-    <script id="afterMe">
-      angular.module('computerVision', ['ui.ace', 'firebase'])
-      .controller('AceCtrl', function ($scope, angularFire) {
-        // The modes
-        $scope.aceOption = {
-          mode: 'javascript',
-        };
-
-        // Initial code content...
-        var ref;
-        ref = new Firebase("https://sherecar.firebaseio.com/code");
-        return angularFire(ref, $scope, "aceModel");
-      });
-
-    </script>
+    
+    <!-- Self Driving Vehicle -->
+    <script type="text/javascript" src="js/shereapp.js" id="afterMe"></script>
+    <script src="./js/image_process.js"></script>
 
   </body>
 </html>
