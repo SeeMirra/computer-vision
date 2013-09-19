@@ -7,62 +7,79 @@
       }
 
       #code_preview {
-        height: 200px;
-        width: 500px;
+        height: 400px;
+        width: 800px;
       }
     </style>
 
   </head>
   <body>
 
-    <img id="original" src="static/images/new_image51.png.png">
+    <div ng-app="computerVision" ng-controller="AceCtrl">
+      <img id="original" src="static/images/new_image51.png.png">
 
-    <canvas id="myCanvas">
+      <canvas id="myCanvas">
       Your browser does not support the HTML5 canvas tag.
-    </canvas>
-    <br />
-      <textarea id="code_preview">
-var algo =  function(imgData) {  
-    // invert colors
-    for (var i=0;i<imgData.data.length;i+=4)
-    {
-        var THRESHOLD = 150;
-
-        imgData.data[i] = 255 - imgData.data[i] % 255;
-        imgData.data[i+1] = 255 - imgData.data[i+1] % 255;
-        imgData.data[i+2] = 255 - imgData.data[i+2] % 255;
-        var pixel_color_is_gray = (130 < imgData.data[i] && imgData.data[i] < 200) && 
-            (130 < imgData.data[i+1] && imgData.data[i+1] < 200) && 
-            (130 < imgData.data[i+2] && imgData.data[i+2] < 200); 
-
-        if (pixel_color_is_gray) { 
-            imgData.data[i] = 255;
-            imgData.data[i+1] = 255;
-            imgData.data[i+2] = 255;
-
-        }
-        imgData.data[i+3] = 255;
-    }
-
-    return imgData;
-}
-
-run_algo(algo);
-      </textarea>
+      </canvas>
+      <br />
+      <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
 
       <input type="submit" onclick="submit()" />
+    </div>
 
 
     <!-- Self Driving Vehicle -->
-    <script src="./image_process.js"></script>
+    <script src="./js/image_process.js"></script>
 
     <!-- AngularJS --> 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+    <script src="./js/ui-ace.min.js"></script>
+
+    <!-- AceJS -->
+    <script src="./js/ace/ace.js"></script>
 
     <!-- Firebase -->
     <script src="https://cdn.firebase.com/v0/firebase.js"></script>
     <script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
 
+    <script>
+      angular.module('computerVision', ['ui.ace'])
+      .controller('AceCtrl', ['$scope', function ($scope) {
+
+        // The modes
+        $scope.aceOption = {
+          mode: 'javascript',
+        };
+
+        // Initial code content...
+        $scope.aceModel = 'var algo =  function(imgData) {  \n' +
+        '    // invert colors\n' +
+        '    for (var i=0;i<imgData.data.length;i+=4)\n' +
+        '    {\n' +
+        '        var THRESHOLD = 150;\n' +
+        '\n' +
+        '        imgData.data[i] = 255 - imgData.data[i] % 255;\n' +
+        '        imgData.data[i+1] = 255 - imgData.data[i+1] % 255;\n' +
+        '        imgData.data[i+2] = 255 - imgData.data[i+2] % 255;\n' +
+        '        var pixel_color_is_gray = (130 < imgData.data[i] && imgData.data[i] < 200) && \n' +
+        '            (130 < imgData.data[i+1] && imgData.data[i+1] < 200) && \n' +
+        '            (130 < imgData.data[i+2] && imgData.data[i+2] < 200); \n' +
+        '\n' +
+        '        if (pixel_color_is_gray) { \n' +
+        '            imgData.data[i] = 255;\n' +
+        '            imgData.data[i+1] = 255;\n' +
+        '            imgData.data[i+2] = 255;\n' +
+        '\n' +
+        '        }\n' +
+        '        imgData.data[i+3] = 255;\n' +
+        '    }\n' +
+        '\n' +
+        '    return imgData;\n' +
+        '}\n' +
+        '\n' +
+        'run_algo(algo);';
+      }]);
+    </script>
 
   </body>
 </html>
