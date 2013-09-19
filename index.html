@@ -43,42 +43,19 @@
     <script src="https://cdn.firebase.com/libs/angularfire/0.3.0/angularfire.min.js"></script>
 
     <script>
-      angular.module('computerVision', ['ui.ace'])
-      .controller('AceCtrl', ['$scope', function ($scope) {
-
+      angular.module('computerVision', ['ui.ace', 'firebase'])
+      .controller('AceCtrl', function ($scope, angularFire) {
         // The modes
         $scope.aceOption = {
           mode: 'javascript',
         };
 
         // Initial code content...
-        $scope.aceModel = 'var algo =  function(imgData) {  \n' +
-        '    // invert colors\n' +
-        '    for (var i=0;i<imgData.data.length;i+=4)\n' +
-        '    {\n' +
-        '        var THRESHOLD = 150;\n' +
-        '\n' +
-        '        imgData.data[i] = 255 - imgData.data[i] % 255;\n' +
-        '        imgData.data[i+1] = 255 - imgData.data[i+1] % 255;\n' +
-        '        imgData.data[i+2] = 255 - imgData.data[i+2] % 255;\n' +
-        '        var pixel_color_is_gray = (130 < imgData.data[i] && imgData.data[i] < 200) && \n' +
-        '            (130 < imgData.data[i+1] && imgData.data[i+1] < 200) && \n' +
-        '            (130 < imgData.data[i+2] && imgData.data[i+2] < 200); \n' +
-        '\n' +
-        '        if (pixel_color_is_gray) { \n' +
-        '            imgData.data[i] = 255;\n' +
-        '            imgData.data[i+1] = 255;\n' +
-        '            imgData.data[i+2] = 255;\n' +
-        '\n' +
-        '        }\n' +
-        '        imgData.data[i+3] = 255;\n' +
-        '    }\n' +
-        '\n' +
-        '    return imgData;\n' +
-        '}\n' +
-        '\n' +
-        'run_algo(algo);';
-      }]);
+        var ref;
+        ref = new Firebase("https://sherecar.firebaseio.com/code");
+        return angularFire(ref, $scope, "aceModel");
+      });
+
     </script>
 
   </body>
