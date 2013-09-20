@@ -18,6 +18,31 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
       $scope.process(1000);
     };
   }); 
+
+
+  $scope.FLOOR = 1;
+  $scope.CEILING = 888;
+  var play_frame;
+
+  var change_img_frame = function() {
+    if($scope.img <= $scope.CEILING){
+      $scope.img++;
+    }
+    else{
+      $scope.img = 1;
+    }
+    play_frame = $timeout(change_img_frame, 600);
+  }
+
+  $scope.stop = function() {
+    $timeout.cancel(play_frame);
+    $scope.playing = false;
+  }
+  
+  $scope.play = function() {
+    $scope.playing = true;
+    change_img_frame();
+  }
   
   // Ace
   $scope.aceOption = {

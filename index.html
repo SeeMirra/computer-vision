@@ -42,7 +42,9 @@
         <div class="col-lg-6">
           <h4>Before</h4>
           <img id="original" ng-src="static/images/image{{img}}.png" width="90%">
-          <slider id="imgChanger" floor="1" ceiling="888" ng-model="img"></slider>
+          <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
+          <a href="" ng-click="play()" ng-hide="playing">Play</a>
+          <a href="" ng-click="stop()" ng-show="playing">Stop</a>
         </div>
         <div class="col-lg-6">
           <h4>After</h4>
