@@ -18,28 +18,65 @@ computerVision.controller('VisionCtrl', function ($scope, angularFire) {
   };
   
   // Note: some final initializations at the bottom
-  
-  $scope.process = function() {
-    var code_preview = document.getElementById('ace_code');
-    var algo_code = ace.edit("code_preview").getValue();
 
-    var code_runner = document.getElementById('code_runner'); 
+  Element.prototype.remove = function() {
+    this.parentElement.removeChild(this);
+  }
 
-    if (code_runner) {
-      code_runner.remove();
+  NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+    for(var i = 0, len = this.length; i < len; i++) {
+      if(this[i] && this[i].parentElement) {
+        this[i].parentElement.removeChild(this[i]);
+      }
     }
+  }
 
-    code_runner = document.createElement('script');
-    code_runner.id = 'code_runner';
-    var code = document.createTextNode(algo_code);
-    code_runner.appendChild(code);
+  var run_algo = function(algo_fn) {
+    var img = document.getElementById("original");
 
-    document.body.insertBefore(code_runner, code_preview.nextSibling);
+    var c = document.getElementById("myCanvas");
+    c.width = img.width;
+    c.height = img.height;
+
+    var ctx = c.getContext("2d");
+    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+    var imgData = ctx.getImageData(0, 0, img.width, img.height);
+
+    imgData = algo_fn(imgData);
+
+    ctx.putImageData(imgData,0,0);
   };
-  
+
+  var process = function() {
+    eval('var algo;\n' + $scope.aceModel + '\n$scope.algo = algo;');
+
+    if ($scope.algo) {
+      run_algo($scope.algo);
+    };
+
+    return true;
+  }
+
+  $scope.process = function(time) {
+    var time = time || 500;
+    $timeout(process, time);
+  };
+
   // Final initialization
   var ref;
-  ref = new Firebase("https://sherecar.firebaseio.com/code");
+  ref = new Firebase("https://sherecar.firebaseio.com/");
+  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
+
+  $scope.login = function() {
+    angularFireAuth.login("github");
+  };
+
+  $scope.logout = function() {
+    angularFireAuth.logout();
+  };
+
+
   return angularFire(ref, $scope, "aceModel");
 
 });
