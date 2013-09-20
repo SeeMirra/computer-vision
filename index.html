@@ -55,6 +55,7 @@
       
       <div class="row">
         <button ng-click="process()" class="btn btn-primary">Process Image</button>
+        <input type="checkbox" ng-model="autoUpdate" />Auto-update Code
         <h4>Edit the process</h4>
         <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
       </div>

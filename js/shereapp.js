@@ -1,8 +1,8 @@
 'use strict';
 
-var computerVision = angular.module('computerVision', ['ui.ace', 'firebase']);
+var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'firebase']);
 
-computerVision.controller('VisionCtrl', function ($scope, angularFire) {
+computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireAuth, angularFire) {
   var base = document.getElementById('original');
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
@@ -10,6 +10,13 @@ computerVision.controller('VisionCtrl', function ($scope, angularFire) {
   $scope.img = 51;
   $scope.$watch('img', function() {
     $scope.process(500);
+  }); 
+
+  $scope.autoUpdate = true;
+  $scope.$watch('aceModel', function() {
+    if ($scope.autoUpdate){
+      $scope.process(1000);
+    };
   }); 
   
   // Ace
