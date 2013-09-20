@@ -6,8 +6,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="css/computervision.css" rel="stylesheet" type="text/css" />
+    <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
   </head>
-  <body ng-app="computerVision">
+  <body ng-app="computerVision" ng-controller="VisionCtrl">
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -31,11 +32,12 @@
       </div><!-- /.navbar-collapse -->
     </nav>
     
-    <div class="container" ng-controller="VisionCtrl">
+    <div class="container">
       <div class="row">
         <div class="col-lg-6">
           <h4>Before</h4>
-          <img id="original" src="static/images/new_image51.png.png">
+          <img id="original" ng-src="static/images/image{{img}}.png" width="90%">
+          <slider id="imgChanger" floor="1" ceiling="888" ng-model="img"></slider>
         </div>
         <div class="col-lg-6">
           <h4>After</h4>
@@ -56,6 +58,8 @@
     <!-- AngularJS --> 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
     <script src="./lib/ui-ace.min.js"></script>
+    <!-- UI-Slider -->
+    <script src="./lib/angular-slider.js"></script>
 
     <!-- AceJS -->
     <script src="./lib/ace/ace.js"></script>

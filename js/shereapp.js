@@ -6,6 +6,11 @@ computerVision.controller('VisionCtrl', function ($scope, angularFire) {
   var base = document.getElementById('original');
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
+
+  $scope.img = 51;
+  $scope.$watch('img', function() {
+    $scope.process(500);
+  }); 
   
   // Ace
   $scope.aceOption = {
