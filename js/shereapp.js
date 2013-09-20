@@ -24,24 +24,50 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   $scope.CEILING = 888;
   var play_frame;
 
-  var change_img_frame = function() {
-    if($scope.img <= $scope.CEILING){
-      $scope.img++;
+  var change_img_frame = function(frame_add) {
+    var frame_add = frame_add || 1;
+    var frame_inc = parseInt($scope.img) + frame_add;
+
+    if(frame_inc <= $scope.CEILING && frame_inc >=$scope.FLOOR){
+      $scope.img = frame_inc;
     }
-    else{
-      $scope.img = 1;
+    else if(frame_inc > $scope.CEILING){
+      $scope.img = $scope.FLOOR;
     }
-    play_frame = $timeout(change_img_frame, 600);
+    else if(frame_inc < $scope.FLOOR){
+      $scope.img = $scope.CEILING;
+    }
+
+    play_frame = $timeout(function(){return change_img_frame(frame_add)}, 600);
   }
 
   $scope.stop = function() {
     $timeout.cancel(play_frame);
     $scope.playing = false;
   }
-  
-  $scope.play = function() {
+
+  $scope.fast_forward = function() {
+    $timeout.cancel(play_frame);
+    change_img_frame(5);
     $scope.playing = true;
+  }
+
+  $scope.fast_rewind = function() {
+    $timeout.cancel(play_frame);
+    change_img_frame(-5);
+    $scope.playing = true;
+  }
+  
+  $scope.rewind = function() {
+    $timeout.cancel(play_frame);
+    change_img_frame(-1);
+    $scope.playing = true;
+  }
+
+  $scope.play = function() {
+    $timeout.cancel(play_frame);
     change_img_frame();
+    $scope.playing = true;
   }
   
   // Ace
