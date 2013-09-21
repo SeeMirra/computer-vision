@@ -29,7 +29,7 @@
           <li><a href="http://www.sherecar.org/" target="_blank">Discuss</a></li>
           <li>
             <span ng-show="user" ng-cloak>
-              {{user.name}} | <a href="" ng-click="logout()">Logout</a>
+              {{user.login}} | <a href="" ng-click="logout()">Logout</a>
             </span>
             <a href="" ng-hide="user" ng-click="login()">Login</a>
           </li>
@@ -68,6 +68,7 @@
 
     <!-- AngularJS --> 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
     <script src="./lib/ui-ace.min.js"></script>
     <!-- UI-Slider -->
     <script src="./lib/angular-slider.js"></script>

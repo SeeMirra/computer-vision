@@ -123,7 +123,7 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
 
   // Final initialization
   var ref;
-  ref = new Firebase("https://sherecar.firebaseio.com/");
+  ref = new Firebase("https://sherecar.firebaseio.com/code");
   angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
 
   $scope.login = function() {
