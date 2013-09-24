@@ -7,9 +7,13 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
 
+  $scope.refreshRate = 600;
+  $scope.refreshRateFloor = 100;
+  $scope.refreshRateCeiling = 10000;
+
   $scope.img = 51;
   $scope.$watch('img', function() {
-    $scope.process(500);
+    $scope.process($scope.refreshRate - 100);
   }); 
 
   $scope.autoUpdate = true;
@@ -42,7 +46,7 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
       $scope.img = $scope.CEILING;
     }
 
-    play_frame = $timeout(function(){return change_img_frame(frame_add)}, 600);
+    play_frame = $timeout(function(){return change_img_frame(frame_add)}, $scope.refreshRate);
   }
 
   $scope.stop = function() {
