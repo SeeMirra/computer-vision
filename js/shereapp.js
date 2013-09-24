@@ -19,6 +19,10 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
     };
   }); 
 
+  $scope.$watch('firebaseModel', function() {
+    $scope.aceModel = $scope.firebaseModel;
+  }); 
+
 
   $scope.FLOOR = 1;
   $scope.CEILING = 888;
@@ -135,6 +139,6 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   };
 
 
-  return angularFire(ref, $scope, "aceModel");
+  return angularFire(ref, $scope, "firebaseModel");
 
 });
