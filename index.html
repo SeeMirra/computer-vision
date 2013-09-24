@@ -48,7 +48,7 @@
           </div>
           <div class="row compare">
             <h4>Before</h4>
-            <img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png" width="90%">
+            <img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png">
           </div>
         </div>
         <div class="col-lg-6">
@@ -60,11 +60,11 @@
             <a href="" ng-click="play()">Play</a> |
             <a href="" ng-click="fast_forward()">Fast Forward</a> | 
             <a href="" ng-click="stop()">Stop</a>
-            <button ng-click="process()" class="btn btn-primary">Process Image</button>
-            <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
           </div>
           <div class="row">
             <h4>Edit the process</h4>
+            <button ng-click="process()" class="btn btn-primary">Process Image</button>
+            <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
           </div>
         </div>
