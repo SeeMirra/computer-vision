@@ -72,7 +72,7 @@
             <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
           </div>
-          <div class="row" ng-show="user">
+          <div class="row" ng-show="user" ng-cloak>
             <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
             <a ng-show="saved.link" href="#/{{ saved.link }}" target="_blank">{{ saved.link }} - Click to view</a>
             <p ng-show="saved.link">
