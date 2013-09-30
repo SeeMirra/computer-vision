@@ -12,6 +12,10 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   var base = document.getElementById('original');
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
+  var saveBase = 'submits/';
+  
+  $scope.saved = {};
+  $scope.saved.link = '';
 
   $scope.refreshRate = 600;
   $scope.refreshRateFloor = 100;
@@ -134,6 +138,17 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
     var time = time || 500;
     $timeout(process, time);
   };
+  
+  $scope.save = function() {
+    var childURL = saveBase + $scope.details.name + '/' + $scope.user.uesrname + '/';
+    var submit = ref.root().child(childURL).push();
+    console.log($scope.firebaseModel);
+    console.log($scope.user);
+    $scope.saved.link = submit.name() + ' - click to edit';
+    $scope.firebaseModel[submit.push().name()] = {
+      user: $scope.user.username, code: $scope.aceModel
+    };
+  };
 
   // Final initialization
   var ref;
@@ -148,7 +163,6 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
     angularFireAuth.logout();
   };
 
-
-  return angularFire(ref, $scope, "firebaseModel");
+  angularFire(ref, $scope, "firebaseModel");
 
 });

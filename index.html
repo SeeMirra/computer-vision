@@ -30,9 +30,9 @@
           <li><a href="{{ details.feedback }}" target="_blank">Feedback</a></li>
           <li><a href="{{ details.discuss }}" target="_blank">Discuss</a></li>
           <li>
-            <span ng-show="user" ng-cloak>
+            <p class="navbar-text" ng-show="user">
               {{user.login}} | <a href="" ng-click="logout()">Logout</a>
-            </span>
+            </p>
             <a href="" ng-hide="user" ng-click="login()">Login</a>
           </li>
         </ul>
@@ -71,6 +71,10 @@
             <button ng-click="process()" class="btn btn-primary">Process Image</button>
             <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
+          </div>
+          <div class="row" ng-show="user">
+            <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
+            {{ saved.link }}
           </div>
         </div>
       </div>
