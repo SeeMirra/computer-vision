@@ -24,9 +24,11 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
         <ul class="nav navbar-nav">
+          <li><p class="navbar-text">{{ details.name }}</p></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="http://www.sherecar.org/" target="_blank">Discuss</a></li>
+          <li><a href="{{ details.feedback }}" target="_blank">Feedback</a></li>
+          <li><a href="{{ details.discuss }}" target="_blank">Discuss</a></li>
           <li>
             <span ng-show="user" ng-cloak>
               {{user.login}} | <a href="" ng-click="logout()">Logout</a>

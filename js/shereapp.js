@@ -3,6 +3,12 @@
 var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'firebase']);
 
 computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireAuth, angularFire) {
+  // page specific settings (will be different per "challenge")
+  $scope.details = {};
+  $scope.details.name = 'Prototype Challenge';
+  $scope.details.discuss = 'http://www.sherecar.org/';
+  $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
+  
   var base = document.getElementById('original');
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
