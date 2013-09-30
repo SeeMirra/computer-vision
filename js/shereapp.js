@@ -43,6 +43,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   
   $scope.saved = {};
   $scope.saved.link = '';
+  $scope.saved.base = 'http://vision.sherecar.org/vision/';
 
   $scope.refreshRate = 600;
   $scope.refreshRateFloor = 100;

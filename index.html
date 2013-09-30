@@ -74,7 +74,10 @@
           </div>
           <div class="row" ng-show="user">
             <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
-            <span ng-show="saved.link"><a href="#/{{ saved.link }}">{{ saved.link }} - click to goto</a></span>
+            <a ng-show="saved.link" href="#/{{ saved.link }}" target="_blank">{{ saved.link }} - Click to view</a>
+            <p ng-show="saved.link">
+              Copy link and share: <input type="text" class="form-control" id="save_url" value="{{ saved.base }}#/{{ saved.link }}">
+            </p>
           </div>
         </div>
       </div>
