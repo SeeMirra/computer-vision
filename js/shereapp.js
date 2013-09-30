@@ -1,8 +1,18 @@
 'use strict';
 
-var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'firebase']);
+var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'firebase'])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/', {
+      })
+      .when('/:codeId', {
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+  });
 
-computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireAuth, angularFire) {
+computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, angularFireAuth, angularFire) {
   // page specific settings (will be different per "challenge")
   $scope.details = {};
   $scope.details.name = 'Prototype Challenge';
@@ -13,6 +23,29 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
   var saveBase = 'submits/';
+  
+  var codeParams = '';
+  var codeId = '';
+  var codeYours = '';
+  
+  $scope.$on('$routeChangeSuccess', function() {
+    var codeParams = $routeParams;
+    if (codeParams.codeId) {
+      codeId = codeParams.codeId;
+      codeYours = new Firebase("https://sherecar.firebaseio.com/vision/submits/" + $scope.details.name);
+      codeYours.child(codeId).once('value', function(snapshot) {
+        if (snapshot.val() !== null) {
+          angularFire(codeYours.child(codeId), $scope, "yourModel");
+        } else {
+          alert('No code exists at: ' + codeId);
+          codeId = 'default';
+        }
+      });
+    }
+    else {
+      codeId = 'default';
+    }
+  });
   
   $scope.saved = {};
   $scope.saved.link = '';
@@ -33,10 +66,17 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
     };
   }); 
 
-  $scope.$watch('firebaseModel', function() {
-    $scope.aceModel = $scope.firebaseModel;
+  $scope.$watch('defaultModel', function() {
+    if (codeId == 'default') {
+      $scope.aceModel = $scope.defaultModel;
+    }
   }); 
 
+  $scope.$watch('yourModel', function() {
+    if (codeId) {
+      $scope.aceModel = $scope.yourModel.code;
+    }
+  }); 
 
   $scope.FLOOR = 1;
   $scope.CEILING = 888;
@@ -141,28 +181,24 @@ computerVision.controller('VisionCtrl', function ($scope, $timeout, angularFireA
   
   $scope.save = function() {
     var childURL = saveBase + $scope.details.name + '/' + $scope.user.uesrname + '/';
-    var submit = ref.root().child(childURL).push();
-    console.log($scope.firebaseModel);
+    var submit = codeDef.root().child(childURL).push();
+    console.log($scope.defaultModel);
     console.log($scope.user);
     $scope.saved.link = submit.name() + ' - click to edit';
-    $scope.firebaseModel[submit.push().name()] = {
+    $scope.defaultModel[submit.push().name()] = {
       user: $scope.user.username, code: $scope.aceModel
     };
   };
 
   // Final initialization
-  var ref;
-  ref = new Firebase("https://sherecar.firebaseio.com/code");
-  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
+  var codeDef = new Firebase("https://sherecar.firebaseio.com/vision/defaults/" + $scope.details.name);
+  angularFire(codeDef, $scope, "defaultModel");
 
+  angularFireAuth.initialize(codeDef, {scope: $scope, name: "user"});
   $scope.login = function() {
     angularFireAuth.login("github");
   };
-
   $scope.logout = function() {
     angularFireAuth.logout();
   };
-
-  angularFire(ref, $scope, "firebaseModel");
-
 });

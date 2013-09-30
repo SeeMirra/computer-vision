@@ -55,6 +55,9 @@
         </div>
         <div class="col-lg-6">
           <div class="row">
+            <ul>
+              <li ng-repeat="item in codeYours">{{ item }}: {{item.username}}</li>
+            </ul>
             <h4>Playthrough controls</h4>
             <h5>Timeline</h5>
             <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
