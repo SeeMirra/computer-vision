@@ -24,19 +24,13 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   var context = canvas.getContext('2d');
   var saveBase = 'submits/';
   
-  var codeParams = '';
   var codeId = '';
-  var codeYours = '';
-  
   $scope.$on('$routeChangeSuccess', function() {
     var codeParams = $routeParams;
     if (codeParams.codeId) {
       codeId = codeParams.codeId;
-      codeYours = new Firebase("https://sherecar.firebaseio.com/vision/submits/" + $scope.details.name);
       codeYours.child(codeId).once('value', function(snapshot) {
-        if (snapshot.val() !== null) {
-          angularFire(codeYours.child(codeId), $scope, "yourModel");
-        } else {
+        if (snapshot.val() === null) {
           alert('No code exists at: ' + codeId);
           codeId = 'default';
         }
@@ -74,7 +68,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   $scope.$watch('yourModel', function() {
     if (codeId) {
-      $scope.aceModel = $scope.yourModel.code;
+      $scope.aceModel = $scope.yourModel[codeId]['code'];
     }
   }); 
 
@@ -181,11 +175,9 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   
   $scope.save = function() {
     var childURL = saveBase + $scope.details.name + '/' + $scope.user.uesrname + '/';
-    var submit = codeDef.root().child(childURL).push();
-    console.log($scope.defaultModel);
-    console.log($scope.user);
-    $scope.saved.link = submit.name() + ' - click to edit';
-    $scope.defaultModel[submit.push().name()] = {
+    var submit = codeYours.child(childURL).push();
+    $scope.saved.link = submit.name();
+    $scope.yourModel[submit.name()] = {
       user: $scope.user.username, code: $scope.aceModel
     };
   };
@@ -193,6 +185,8 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   // Final initialization
   var codeDef = new Firebase("https://sherecar.firebaseio.com/vision/defaults/" + $scope.details.name);
   angularFire(codeDef, $scope, "defaultModel");
+  var codeYours = new Firebase("https://sherecar.firebaseio.com/vision/submits/" + $scope.details.name);
+  angularFire(codeYours, $scope, "yourModel");
 
   angularFireAuth.initialize(codeDef, {scope: $scope, name: "user"});
   $scope.login = function() {

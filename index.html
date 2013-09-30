@@ -55,9 +55,6 @@
         </div>
         <div class="col-lg-6">
           <div class="row">
-            <ul>
-              <li ng-repeat="item in codeYours">{{ item }}: {{item.username}}</li>
-            </ul>
             <h4>Playthrough controls</h4>
             <h5>Timeline</h5>
             <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
@@ -77,7 +74,7 @@
           </div>
           <div class="row" ng-show="user">
             <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
-            {{ saved.link }}
+            <span ng-show="saved.link"><a href="#/{{ saved.link }}">{{ saved.link }} - click to goto</a></span>
           </div>
         </div>
       </div>
