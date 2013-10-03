@@ -174,12 +174,10 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     imgData = algo_fn(imgData);
 
     ctx.putImageData(imgData,0,0);
-    debugger;
   };
 
   var process = function() {
     eval('var algo;\n' + $scope.aceModel + '\n$scope.algo = algo;');
-    debugger;
 
     if ($scope.algo) {
       run_algo($scope.algo);
