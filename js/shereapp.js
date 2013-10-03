@@ -54,16 +54,6 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.hideDescription = false;
 
   $scope.img = 51;
-  $scope.$watch('img', function() {
-    $scope.process($scope.refreshRate - 100);
-  }); 
-
-  $scope.autoUpdate = true;
-  $scope.$watch('aceModel', function() {
-    if ($scope.autoUpdate){
-      $scope.process(1000);
-    };
-  }); 
 
   $scope.$watch('defaultModel', function() {
     if (codeId == 'default') {
@@ -95,7 +85,25 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
       $scope.img = $scope.CEILING;
     }
 
-    play_frame = $timeout(function(){return change_img_frame(frame_add)}, $scope.refreshRate);
+    showImage(frame_add);
+  }
+
+  var showImage = function(frame_add) { 
+    loadImage(
+      '/static/images/image'+$scope.img+'.png',
+      function (img) {
+        img.setAttribute('id', 'original');
+        var original_container = document.getElementById('original-image');
+        var original_image = original_container.firstChild;
+        if(original_image) {
+          original_container.removeChild(original_container.firstChild);
+        }
+        original_container.appendChild(img);
+        $scope.process();
+        $timeout(function(){ return change_img_frame(frame_add); }, 1000);
+      },
+      {maxWidth: 500} // Options
+    );
   }
 
   $scope.stop = function() {

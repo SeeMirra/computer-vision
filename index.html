@@ -9,7 +9,7 @@
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css" >
   </head>
-  <body ng-app="computerVision" ng-controller="VisionCtrl">
+  <body ng-app="computerVision" ng-controller="VisionCtrl" ng-init="play()">
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -57,7 +57,8 @@
           </div>
           <div class="row compare">
             <h4>Before</h4>
-            <img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png">
+            <div id="original-image"></div>
+            <!--<img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png" image-load>-->
           </div>
         </div>
         <div class="col-md-6">
@@ -84,9 +85,6 @@
                 <span class="glyphicon glyphicon-forward"></span>
               </button>
             </div>
-            <h5>Refresh Rate [change when process image doesn't show up when playing] (ms)</h5>
-            <slider id="imgChanger" floor="{{refreshRateFloor}}" ceiling="{{refreshRateCeiling}}" ng-model="refreshRate"></slider>
-            
           </div>
           <div class="row" style="height: 100%">
             <h4>Edit the process</h4>
@@ -98,7 +96,7 @@
             </button>
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
           </div>
-          <div class="row" ng-show="user">
+          <div class="row" ng-show="user" ng-cloak>
             <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
             <a ng-show="saved.link" href="#/{{ saved.link }}" target="_blank">{{ saved.link }} - Click to view</a>
             <p ng-show="saved.link">
@@ -118,6 +116,9 @@
     <script src="./lib/angular-slider.js"></script>
     <script src="./lib/ui-bootstrap-0.6.0.min.js"></script>
     <script src="./lib/ui-bootstrap-tpls-0.6.0.min.js"></script>
+
+    <!-- Load Image --> 
+    <script src="./lib/load-image/load-image.min.js"></script>
 
     <!-- AceJS -->
     <script src="./lib/ace/ace.js"></script>
