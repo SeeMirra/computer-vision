@@ -92,7 +92,24 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
       $scope.img = $scope.CEILING;
     }
 
-    play_frame = $timeout(function(){return change_img_frame(frame_add)}, $scope.refreshRate);
+    loadImage(
+      '/static/images/image'+$scope.img+'.png',
+      function (img) {
+        img.setAttribute('image-load', '');
+        img.setAttribute('id', 'original');
+        console.log(img);
+        var original_container = document.getElementById('original-image');
+        var original_image = original_container.firstChild;
+        if(original_image) {
+          original_container.removeChild(original_container.firstChild);
+        }
+        original_container.appendChild(img);
+        console.log('next frame');
+        $scope.process();
+        $timeout(function(){ return change_img_frame(frame_add); }, 1000);
+      },
+      {maxWidth: 500} // Options
+    );
   }
 
   $scope.stop = function() {
