@@ -12,17 +12,6 @@ var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'fi
       });
   });
 
-computerVision.directive('imageLoad', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind("load", function(e) {
-        console.log('loaded!');
-        scope.process(500);
-      });
-    }
-  }
-});
-
 computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, angularFireAuth, angularFire) {
   // page specific settings (will be different per "challenge")
   $scope.details = {};
@@ -95,16 +84,13 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     loadImage(
       '/static/images/image'+$scope.img+'.png',
       function (img) {
-        img.setAttribute('image-load', '');
         img.setAttribute('id', 'original');
-        console.log(img);
         var original_container = document.getElementById('original-image');
         var original_image = original_container.firstChild;
         if(original_image) {
           original_container.removeChild(original_container.firstChild);
         }
         original_container.appendChild(img);
-        console.log('next frame');
         $scope.process();
         $timeout(function(){ return change_img_frame(frame_add); }, 1000);
       },
