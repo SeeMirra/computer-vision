@@ -50,7 +50,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.refreshRateFloor = 100;
   $scope.refreshRateCeiling = 10000;
   
-  $scope.playControls = 'stop';
+  $scope.playControls = 'play';
   $scope.hideDescription = false;
 
   $scope.img = 51;
