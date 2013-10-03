@@ -100,7 +100,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
         }
         original_container.appendChild(img);
         $scope.process();
-        $timeout(function(){ return change_img_frame(frame_add); }, 1000);
+        play_frame = $timeout(function(){ return change_img_frame(frame_add); }, 1000);
       },
       {maxWidth: 500} // Options
     );
@@ -109,30 +109,35 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.stop = function() {
     $timeout.cancel(play_frame);
     $scope.playing = false;
+    $scope.playControls = 'stop';
   }
 
   $scope.fast_forward = function() {
     $timeout.cancel(play_frame);
     change_img_frame(5);
     $scope.playing = true;
+    $scope.playControls = 'forward';
   }
 
   $scope.fast_rewind = function() {
     $timeout.cancel(play_frame);
     change_img_frame(-5);
     $scope.playing = true;
+    $scope.playControls = 'back';
   }
   
   $scope.rewind = function() {
     $timeout.cancel(play_frame);
     change_img_frame(-1);
     $scope.playing = true;
+    $scope.playControls = 'reverse';
   }
 
   $scope.play = function() {
     $timeout.cancel(play_frame);
     change_img_frame();
     $scope.playing = true;
+    $scope.playControls = 'play';
   }
   
   // Ace
