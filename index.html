@@ -67,7 +67,7 @@
             <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
           </div>
           <div class="row">
-            <div class="btn-group" class="col-md-4">
+            <div class="btn-group">
               <button type="button" ng-click="fast_rewind()" ng-model="playControls" btn-radio="'back'" tooltip="Fast Backward" class="btn btn-default">
                 <span class="glyphicon glyphicon-backward"></span>
               </button>
@@ -86,11 +86,16 @@
             </div>
             <h5>Refresh Rate [change when process image doesn't show up when playing] (ms)</h5>
             <slider id="imgChanger" floor="{{refreshRateFloor}}" ceiling="{{refreshRateCeiling}}" ng-model="refreshRate"></slider>
-            <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
+            
           </div>
           <div class="row" style="height: 100%">
             <h4>Edit the process</h4>
-            <button ng-click="process()" class="btn btn-primary">Process Image</button>
+            <button ng-click="process()" class="btn btn-primary">
+              Process Image
+            </button>
+            <button type="button" class="btn btn-warning" ng-model="autoUpdate" btn-checkbox >
+              Auto-process Code
+            </button>
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
           </div>
           <div class="row" ng-show="user">
