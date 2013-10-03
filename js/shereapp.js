@@ -1,6 +1,6 @@
 'use strict';
 
-var computerVision = angular.module('computerVision', ['ui.ace', 'uiSlider', 'firebase'])
+var computerVision = angular.module('computerVision', ['ui.ace', 'ui.bootstrap', 'uiSlider', 'firebase'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -16,6 +16,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   // page specific settings (will be different per "challenge")
   $scope.details = {};
   $scope.details.name = 'Prototype Challenge';
+  $scope.details.description = 'This is currently a prototype page for the ShereCar Vision Algorithm project. These types of pages will serve as a exapmle platform for users to create and test vision algorithms';
   $scope.details.discuss = 'http://www.sherecar.org/';
   $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
   
@@ -48,6 +49,9 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.refreshRate = 600;
   $scope.refreshRateFloor = 100;
   $scope.refreshRateCeiling = 10000;
+  
+  $scope.playControls = 'stop';
+  $scope.hideDescription = false;
 
   $scope.img = 51;
   $scope.$watch('img', function() {
