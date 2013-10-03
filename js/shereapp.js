@@ -81,6 +81,10 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
       $scope.img = $scope.CEILING;
     }
 
+    showImage(frame_add);
+  }
+
+  var showImage = function(frame_add) { 
     loadImage(
       '/static/images/image'+$scope.img+'.png',
       function (img) {

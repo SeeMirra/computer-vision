@@ -8,7 +8,7 @@
     <link href="css/computervision.css" rel="stylesheet" type="text/css" />
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
   </head>
-  <body ng-app="computerVision" ng-controller="VisionCtrl">
+  <body ng-app="computerVision" ng-controller="VisionCtrl" ng-init="play()">
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -91,8 +91,6 @@
 
     <!-- Load Image --> 
     <script src="./lib/load-image/load-image.min.js"></script>
-    <script type="text/javascript">
-    </script>
 
     <!-- AceJS -->
     <script src="./lib/ace/ace.js"></script>
