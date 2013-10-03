@@ -16,7 +16,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   // page specific settings (will be different per "challenge")
   $scope.details = {};
   $scope.details.name = 'Prototype Challenge';
-  $scope.details.description = 'This is currently a prototype page for the ShereCar Vision Algorithm project. These types of pages will serve as a exapmle platform for users to create and test vision algorithms';
+  $scope.details.description = 'This is currently a prototype page for the ShereCar Vision Algorithm project. These types of pages will serve as a example platform for users to create and test vision algorithms';
   $scope.details.discuss = 'http://www.sherecar.org/';
   $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
   
@@ -174,10 +174,12 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     imgData = algo_fn(imgData);
 
     ctx.putImageData(imgData,0,0);
+    debugger;
   };
 
   var process = function() {
     eval('var algo;\n' + $scope.aceModel + '\n$scope.algo = algo;');
+    debugger;
 
     if ($scope.algo) {
       run_algo($scope.algo);
