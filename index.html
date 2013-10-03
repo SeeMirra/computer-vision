@@ -7,6 +7,7 @@
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
     <link href="css/computervision.css" rel="stylesheet" type="text/css" />
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
+    <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css" >
   </head>
   <body ng-app="computerVision" ng-controller="VisionCtrl" ng-init="play()">
     <nav class="navbar navbar-default" role="navigation">
@@ -41,7 +42,13 @@
     
     <div class="container">
       <div class="row">
-        <div class="col-lg-6">
+        <button class="btn btn-info" ng-click="hideDescription = !hideDescription">Challenge Description</button>
+        <div ng-hide="hideDescription">
+            <div class="well well-sm">{{ details.description }}</div> 
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
           <div class="row compare">
             <h4>After</h4>
             <canvas id="myCanvas" class="img-responsive" >
@@ -54,21 +61,39 @@
             <!--<img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png" image-load>-->
           </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-md-6">
           <div class="row">
             <h4>Playthrough controls</h4>
             <h5>Timeline</h5>
             <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
-            <a href="" ng-click="fast_rewind()">Fast Rewind</a> | 
-            <a href="" ng-click="rewind()">Rewind</a> | 
-            <a href="" ng-click="play()">Play</a> |
-            <a href="" ng-click="fast_forward()">Fast Forward</a> | 
-            <a href="" ng-click="stop()">Stop</a>
+          </div>
+          <div class="row">
+            <div class="btn-group">
+              <button type="button" ng-click="fast_rewind()" ng-model="playControls" btn-radio="'back'" tooltip="Fast Backward" class="btn btn-default">
+                <span class="glyphicon glyphicon-backward"></span>
+              </button>
+              <button type="button" ng-click="rewind()" ng-model="playControls" btn-radio="'reverse'" tooltip="Reverse" class="btn btn-default">
+                <span class="glyphicon glyphicon-step-backward"></span>
+              </button>
+              <button type="button" ng-click="stop()" ng-model="playControls" btn-radio="'stop'" tooltip="Stop" class="btn btn-default">
+                <span class="glyphicon glyphicon-stop"></span>
+              </button>
+              <button type="button" ng-click="play()" ng-model="playControls" btn-radio="'play'" tooltip="Play" class="btn btn-default">
+                <span class="glyphicon glyphicon-play"></span>
+              </button>
+              <button type="button" ng-click="fast_forward()" ng-model="playControls" btn-radio="'forward'" tooltip="Fast Forward" class="btn btn-default">
+                <span class="glyphicon glyphicon-forward"></span>
+              </button>
+            </div>
           </div>
           <div class="row" style="height: 100%">
             <h4>Edit the process</h4>
-            <button ng-click="process()" class="btn btn-primary">Process Image</button>
-            <input type="checkbox" ng-model="autoUpdate" />Auto-process Code
+            <button ng-click="process()" class="btn btn-primary">
+              Process Image
+            </button>
+            <button type="button" class="btn btn-warning" ng-model="autoUpdate" btn-checkbox >
+              Auto-process Code
+            </button>
             <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
           </div>
           <div class="row" ng-show="user" ng-cloak>
@@ -86,8 +111,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
     <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
     <script src="./lib/ui-ace.min.js"></script>
-    <!-- UI-Slider -->
+    
+    <!-- UI -->
     <script src="./lib/angular-slider.js"></script>
+    <script src="./lib/ui-bootstrap-0.6.0.min.js"></script>
+    <script src="./lib/ui-bootstrap-tpls-0.6.0.min.js"></script>
 
     <!-- Load Image --> 
     <script src="./lib/load-image/load-image.min.js"></script>
