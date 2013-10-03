@@ -20,12 +20,30 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.details.discuss = 'http://www.sherecar.org/';
   $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
   
+  // Page properties
   var base = document.getElementById('original');
   var canvas = document.getElementById('myCanvas');
   var context = canvas.getContext('2d');
   var saveBase = 'submits/';
   
-  var codeId = '';
+  // Angular models
+  $scope.saved = {};
+  $scope.saved.link = '';
+  $scope.saved.base = 'http://vision.sherecar.org/vision/';
+  
+  $scope.playControls = 'play';
+  $scope.hideDescription = false;
+
+  // "Frame" numbers
+  $scope.img = 51;          // Before image count w/ initial number
+  $scope.FLOOR = 1;
+  $scope.CEILING = 888;
+  
+  var codeId = '';          // Code sourced based on routing
+  var play_frame;
+  
+  // Note: some final initializations at the bottom
+  
   $scope.$on('$routeChangeSuccess', function() {
     var codeParams = $routeParams;
     if (codeParams.codeId) {
@@ -42,19 +60,6 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     }
   });
   
-  $scope.saved = {};
-  $scope.saved.link = '';
-  $scope.saved.base = 'http://vision.sherecar.org/vision/';
-
-  $scope.refreshRate = 600;
-  $scope.refreshRateFloor = 100;
-  $scope.refreshRateCeiling = 10000;
-  
-  $scope.playControls = 'play';
-  $scope.hideDescription = false;
-
-  $scope.img = 51;
-
   $scope.$watch('defaultModel', function() {
     if (codeId == 'default') {
       $scope.aceModel = $scope.defaultModel;
@@ -66,10 +71,6 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
       $scope.aceModel = $scope.yourModel[codeId]['code'];
     }
   }); 
-
-  $scope.FLOOR = 1;
-  $scope.CEILING = 888;
-  var play_frame;
 
   var change_img_frame = function(frame_add) {
     var frame_add = frame_add || 1;
@@ -144,8 +145,6 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.aceOption = {
     mode: 'javascript',
   };
-  
-  // Note: some final initializations at the bottom
 
   Element.prototype.remove = function() {
     this.parentElement.removeChild(this);
@@ -201,6 +200,8 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   };
 
   // Final initialization
+  
+  // set up firebase references to default code
   var codeDef = new Firebase("https://sherecar.firebaseio.com/vision/defaults/" + $scope.details.name);
   angularFire(codeDef, $scope, "defaultModel");
   var codeYours = new Firebase("https://sherecar.firebaseio.com/vision/submits/" + $scope.details.name);
