@@ -3,10 +3,11 @@
 var computerVision = angular.module('computerVision', ['ui.ace', 'ui.bootstrap', 'uiSlider', 'firebase'])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/', {
-      })
-      .when('/:codeId', {
-      })
+      .when('/', {templateUrl: 'partials/home.html'})
+      .when('/references', {templateUrl: 'partials/references.html'})
+      .when('/editor', {templateUrl: 'partials/editor.html'})
+      .when('/editor/:codeId', {templateUrl: 'partials/editor.html'})
+      .when('/challenges', {templateUrl: 'partials/challenges/intro.html'})
       .otherwise({
         redirectTo: '/'
       });
@@ -53,7 +54,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.playControls = 'play';
   $scope.hideDescription = false;
 
-  $scope.img = 51;
+  $scope.img = 52;
 
   $scope.$watch('defaultModel', function() {
     if (codeId == 'default') {
