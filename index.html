@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="computerVision">
   <head>
-    <title>Shere Car Challenge - Prototype</title>
+    <title>sherecar.org | Computer Vision Exploratorium</title>
     
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
@@ -9,7 +9,8 @@
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css" >
   </head>
-  <body ng-app="computerVision" ng-controller="VisionCtrl" ng-init="play()">
+  <body>
+
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -24,90 +25,22 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
-        <ul class="nav navbar-nav">
-          <li><p class="navbar-text">{{ details.name }}</p></li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="{{ details.feedback }}" target="_blank">Feedback</a></li>
-          <li><a href="{{ details.discuss }}" target="_blank">Discuss</a></li>
+          <li><a href="https://github.com/Self-Driving-Vehicle/computer-vision/issues" target="_blank">Feedback</a></li>
+          <li><a href="http://www.sherecar.org/" target="_blank">Discuss</a></li>
           <li>
-            <p class="navbar-text" ng-show="user">
-              {{user.login}} | <a href="" ng-click="logout()">Logout</a>
+            <p class="navbar-text ng-binding" ng-show="user" style="display: none;">
+               | <a href="" ng-click="logout()">Logout</a>
             </p>
-            <a href="" ng-hide="user" ng-click="login()">Login</a>
+            <a href="" ng-hide="user" ng-click="login()" style="">Login</a>
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </nav>
-    
-    <div class="container">
-      <div class="row">
-        <button class="btn btn-info" ng-click="hideDescription = !hideDescription">Challenge Description</button>
-        <div ng-hide="hideDescription">
-            <div class="well well-sm">{{ details.description }}</div> 
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="row compare">
-            <h4>After</h4>
-            <canvas id="myCanvas" class="img-responsive" >
-              Your browser does not support the HTML5 canvas tag.
-            </canvas>
-          </div>
-          <div class="row compare">
-            <h4>Before</h4>
-            <div id="original-image"></div>
-            <!--<img id="original" class="img-responsive" ng-src="static/images/image{{img}}.png" image-load>-->
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="row">
-            <h4>Playthrough controls</h4>
-            <h5>Timeline</h5>
-            <slider id="imgChanger" floor="{{FLOOR}}" ceiling="{{CEILING}}" ng-model="img"></slider>
-          </div>
-          <div class="row">
-            <div class="btn-group">
-              <button type="button" ng-click="fast_rewind()" ng-model="playControls" btn-radio="'back'" tooltip="Fast Backward" class="btn btn-default">
-                <span class="glyphicon glyphicon-backward"></span>
-              </button>
-              <button type="button" ng-click="rewind()" ng-model="playControls" btn-radio="'reverse'" tooltip="Reverse" class="btn btn-default">
-                <span class="glyphicon glyphicon-step-backward"></span>
-              </button>
-              <button type="button" ng-click="stop()" ng-model="playControls" btn-radio="'stop'" tooltip="Stop" class="btn btn-default">
-                <span class="glyphicon glyphicon-stop"></span>
-              </button>
-              <button type="button" ng-click="play()" ng-model="playControls" btn-radio="'play'" tooltip="Play" class="btn btn-default">
-                <span class="glyphicon glyphicon-play"></span>
-              </button>
-              <button type="button" ng-click="fast_forward()" ng-model="playControls" btn-radio="'forward'" tooltip="Fast Forward" class="btn btn-default">
-                <span class="glyphicon glyphicon-forward"></span>
-              </button>
-            </div>
-          </div>
-          <div class="row" style="height: 100%">
-            <h4>Edit the process</h4>
-            <button ng-click="process()" class="btn btn-primary">
-              Process Image
-            </button>
-            <button type="button" class="btn btn-warning" ng-model="autoUpdate" btn-checkbox >
-              Auto-process Code
-            </button>
-            <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
-          </div>
-          <div class="row" ng-show="user" ng-cloak>
-            <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>
-            <a ng-show="saved.link" href="#/{{ saved.link }}" target="_blank">{{ saved.link }} - Click to view</a>
-            <p ng-show="saved.link">
-              Copy link and share: <input type="text" class="form-control" id="save_url" value="{{ saved.base }}#/{{ saved.link }}">
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <!-- AngularJS --> 
+    <div ng-view></div>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
     <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase-auth-client.js"></script>
     <script src="./lib/ui-ace.min.js"></script>
