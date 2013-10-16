@@ -91,7 +91,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   var showImage = function(frame_add) { 
     loadImage(
-      '/static/images/image'+$scope.img+'.png',
+      'static/images/image'+$scope.img+'.png',
       function (img) {
         img.setAttribute('id', 'original');
         var original_container = document.getElementById('original-image');
