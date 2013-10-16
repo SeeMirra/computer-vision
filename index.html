@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="computerVision">
+<html>
   <head>
     <title>sherecar.org | Computer Vision Exploratorium</title>
     
@@ -9,8 +9,7 @@
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css" >
   </head>
-  <body>
-
+  <body ng-app="computerVision">
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -25,14 +24,17 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav">
+          <li><p class="navbar-text">{{ details.name }}</p></li>
+        </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="https://github.com/Self-Driving-Vehicle/computer-vision/issues" target="_blank">Feedback</a></li>
-          <li><a href="http://www.sherecar.org/" target="_blank">Discuss</a></li>
+          <li><a href="{{ details.feedback }}" target="_blank">Feedback</a></li>
+          <li><a href="{{ details.discuss }}" target="_blank">Discuss</a></li>
           <li>
-            <p class="navbar-text ng-binding" ng-show="user" style="display: none;">
-               | <a href="" ng-click="logout()">Logout</a>
+            <p class="navbar-text" ng-show="user">
+              {{user.login}} | <a href="" ng-click="logout()">Logout</a>
             </p>
-            <a href="" ng-hide="user" ng-click="login()" style="">Login</a>
+            <a href="" ng-hide="user" ng-click="login()">Login</a>
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->

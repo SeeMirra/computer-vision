@@ -32,7 +32,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.saved.link = '';
   $scope.saved.base = 'http://vision.sherecar.org/vision/';
   
-  $scope.playControls = 'play';
+  $scope.playControls = '';
   $scope.hideDescription = false;
 
   // "Frame" numbers
