@@ -11,9 +11,10 @@ var computerVision = angular.module('computerVision', ['ui.ace', 'ui.bootstrap',
       .otherwise({
         redirectTo: '/'
       });
-  });
+  }
+);
 
-computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, angularFireAuth, angularFire) {
+computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, $q, serverProcessService, angularFireAuth, angularFire) {
   // page specific settings (will be different per "challenge")
   $scope.details = {};
   $scope.details.name = 'Prototype Challenge';
@@ -32,11 +33,13 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.saved.link = '';
   $scope.saved.base = 'http://vision.sherecar.org/vision/';
   $scope.autoUpdate = true;
+  $scope.editorError = "";
   $scope.useCallback = false;
+  $scope.callbackUrl = "";
   $scope.postImageUrl = "";
   
   $scope.playControls = '';
-  $scope.hideDescription = false;
+  $scope.showDescription = true;
 
   // "Frame" numbers
   $scope.img = 51;          // Before image count w/ initial number
@@ -165,20 +168,37 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   }
 
   var run_algo = function(algo_fn) {
-    var img = document.getElementById("original");
+    $scope.editorError = "";
+    if ($scope.useCallback) {
+      if ($scope.callbackUrl) {
+        var callbackPromise;
+        callbackPromise = serverProcessService.callServer($scope.callbackUrl, 'static/images/image'+$scope.img+'.png');
 
-    var c = document.getElementById("myCanvas");
-    c.width = img.width;
-    c.height = img.height;
+        $q.all(callbackPromise).then(function (response) {
+          //Txt file: /static/testURL.txt
+          $scope.postImageUrl = response;
+        });
+      }
+      else {
+        $scope.editorError = "Invalid URL provided";
+      }
+    }
+    else {
+      var img = document.getElementById("original");
 
-    var ctx = c.getContext("2d");
-    ctx.drawImage(img, 0, 0, img.width, img.height);
+      var c = document.getElementById("myCanvas");
+      c.width = img.width;
+      c.height = img.height;
 
-    var imgData = ctx.getImageData(0, 0, img.width, img.height);
+      var ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0, img.width, img.height);
 
-    imgData = algo_fn(imgData);
+      var imgData = ctx.getImageData(0, 0, img.width, img.height);
 
-    ctx.putImageData(imgData,0,0);
+      imgData = algo_fn(imgData);
+
+      ctx.putImageData(imgData,0,0);
+    }
   };
 
   var process = function() {
@@ -201,7 +221,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     var submit = codeYours.child(childURL).push();
     $scope.saved.link = submit.name();
     $scope.yourModel[submit.name()] = {
-      user: $scope.user.username, code: $scope.aceModel
+      user: $scope.user.username, code: $scope.aceModel, callback: $scope.callbackUrl
     };
   };
 

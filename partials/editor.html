@@ -2,8 +2,10 @@
     <h1>editor</h1>
 
     <div class="row">
-        <button class="btn btn-info" ng-click="hideDescription = !hideDescription">Challenge Description</button>
-        <div ng-hide="hideDescription">
+        <button type="button" class="btn btn-info" ng-model="showDescription" btn-checkbox>
+          <span tooltip="Explanation of the the current problem">Challenge Description</span>
+        </button>
+        <div ng-show="showDescription">
             <div class="well well-sm">{{ details.description }}</div>
         </div>
     </div>
@@ -11,11 +13,12 @@
         <div class="col-md-6">
             <div class="row compare">
                 <h4>After</h4>
-                <canvas id="myCanvas" class="img-responsive" ng-hide="postImageUrl">
+                <canvas id="myCanvas" class="img-responsive" ng-hide="useCallback">
                   Your browser does not support the HTML5 canvas tag.
                 </canvas>
-                <div id="after-image" ng-show="postImageUrl>
-                  <img src="http://placehold.it/350x150&text=Processing">
+                <div id="after-image" ng-show="useCallback">
+                  <img ng-show="postImageUrl" src="{{ postImageUrl }}">
+                  <img ng-hide="postImageUrl" src="http://placehold.it/400x250&text=Placeholder">
                 </div>
             </div>
             <div class="row compare">
@@ -62,6 +65,7 @@
               </button>
             </div>
             <hr>
+            <div ng-show="editorError" class="alert alert-danger" data-dismiss="alert">{{ editorError }}</div>
             <div class="row" style="height: 100%">
               <div class="callback-form" ng-show="useCallback">
                 <label for="inputCallback" class="col-lg-3 control-label">URL of Server</label>
