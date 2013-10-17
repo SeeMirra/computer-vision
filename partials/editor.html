@@ -11,9 +11,12 @@
         <div class="col-md-6">
             <div class="row compare">
                 <h4>After</h4>
-                <canvas id="myCanvas" class="img-responsive">
-                    Your browser does not support the HTML5 canvas tag.
+                <canvas id="myCanvas" class="img-responsive" ng-hide="postImageUrl">
+                  Your browser does not support the HTML5 canvas tag.
                 </canvas>
+                <div id="after-image" ng-show="postImageUrl>
+                  <img src="http://placehold.it/350x150&text=Processing">
+                </div>
             </div>
             <div class="row compare">
                 <h4>Before</h4>
@@ -47,14 +50,28 @@
                 </div>
             </div>
             <div class="row" style="height: 100%">
-                <h4>Edit the process</h4>
-                <button ng-click="process()" class="btn btn-primary">
-                    Process Image
-                </button>
-                <button type="button" class="btn btn-warning" ng-model="autoUpdate" btn-checkbox>
-                    Auto-process Code
-                </button>
-                <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
+              <h4>Edit the process</h4>
+              <button ng-click="process()" class="btn btn-primary">
+                <span tooltip="Run the code below once">Prcoess Image</span>
+              </button>
+              <button type="button" class="btn btn-warning" ng-model="autoUpdate" btn-checkbox-true=true btn-checkbox-false=false btn-checkbox>
+                <span tooltip="Automatically run the code after a change to the editor">Auto-process Code</span>
+              </button>
+              <button type="button" class="btn btn-info" ng-model="useCallback" btn-checkbox>
+                <span tooltip="Call a server to process the image">Use Server Callback</span>
+              </button>
+            </div>
+            <hr>
+            <div class="row" style="height: 100%">
+              <div class="callback-form" ng-show="useCallback">
+                <label for="inputCallback" class="col-lg-3 control-label">URL of Server</label>
+                <div class="col-lg-9">
+                  <input type="url" ng-model="callbackUrl" placeholder="Server Location" class="form-control" id="inputCallback">
+                </div>
+              </div>
+              <h5 ng-hide="useCallback">Apply the Javascript below to the image</h5>
+              <h5 ng-show="useCallback">Paste your source code here so others can see</h5>
+              <div ui-ace="aceOption" ng-model="aceModel" id="code_preview"></div>
             </div>
             <div class="row" ng-show="user" ng-cloak>
                 <button ng-click="save()" class="btn btn-success">Save Code To Custom URL</button>

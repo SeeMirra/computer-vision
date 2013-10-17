@@ -31,6 +31,9 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.saved = {};
   $scope.saved.link = '';
   $scope.saved.base = 'http://vision.sherecar.org/vision/';
+  $scope.autoUpdate = true;
+  $scope.useCallback = false;
+  $scope.postImageUrl = "";
   
   $scope.playControls = '';
   $scope.hideDescription = false;
@@ -69,6 +72,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   $scope.$watch('yourModel', function() {
     if (codeId) {
+      $scope.callbackUrl = $scope.yourModel[codeId]['callback'];
       $scope.aceModel = $scope.yourModel[codeId]['code'];
     }
   }); 
@@ -124,6 +128,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.fast_rewind = function() {
     $timeout.cancel(play_frame);
     change_img_frame(-5);
+
     $scope.playing = true;
     $scope.playControls = 'back';
   }
