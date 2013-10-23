@@ -11,9 +11,10 @@ var computerVision = angular.module('computerVision', ['ui.ace', 'ui.bootstrap',
       .otherwise({
         redirectTo: '/'
       });
-  });
+  }
+);
 
-computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, angularFireAuth, angularFire) {
+computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout, $q, serverProcessService, angularFireAuth, angularFire) {
   // page specific settings (will be different per "challenge")
   $scope.details = {};
   $scope.details.name = 'Prototype Challenge';
@@ -21,19 +22,21 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.details.discuss = 'http://www.sherecar.org/';
   $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
   
-  // Page properties
-  var base = document.getElementById('original');
-  var canvas = document.getElementById('myCanvas');
-  var context = canvas.getContext('2d');
   var saveBase = 'submits/';
-  
+
   // Angular models
   $scope.saved = {};
   $scope.saved.link = '';
   $scope.saved.base = 'http://vision.sherecar.org/vision/';
+  $scope.autoUpdate = true;
+  $scope.editorError = "";
+  $scope.callbackSettings = {};
+  $scope.callbackSettings.useCallback = false;
+  $scope.callbackSettings.callbackUrl = "";
+  $scope.callbackSettings.postImageUrl = "";
   
   $scope.playControls = '';
-  $scope.hideDescription = false;
+  $scope.showDescription = true;
 
   // "Frame" numbers
   $scope.img = 51;          // Before image count w/ initial number
@@ -69,6 +72,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   $scope.$watch('yourModel', function() {
     if (codeId) {
+      $scope.callbackSettings.callbackUrl = $scope.yourModel[codeId]['callback'];
       $scope.aceModel = $scope.yourModel[codeId]['code'];
     }
   }); 
@@ -124,6 +128,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.fast_rewind = function() {
     $timeout.cancel(play_frame);
     change_img_frame(-5);
+
     $scope.playing = true;
     $scope.playControls = 'back';
   }
@@ -160,20 +165,40 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   }
 
   var run_algo = function(algo_fn) {
-    var img = document.getElementById("original");
+    $scope.editorError = "";
+      debugger;
+    if ($scope.callbackSettings.useCallback) {
+      if ($scope.callbackSettings.callbackUrl) {
+        var callbackPromise;
+        callbackPromise = serverProcessService.callServer($scope.callbackSettings.callbackUrl, 'static/images/image'+$scope.img+'.png');
 
-    var c = document.getElementById("myCanvas");
-    c.width = img.width;
-    c.height = img.height;
+        $q.all(callbackPromise).then(function (response) {
+          //Txt file: /static/testURL.txt
+          $scope.callbackSettings.postImageUrl = response;
+        }, function(){
+          console.log("ARRRGH");
+        });
+      }
+      else {
+        $scope.editorError = "Invalid URL provided";
+      }
+    }
+    else {
+      var img = document.getElementById("original");
 
-    var ctx = c.getContext("2d");
-    ctx.drawImage(img, 0, 0, img.width, img.height);
+      var c = document.getElementById("myCanvas");
+      c.width = img.width;
+      c.height = img.height;
 
-    var imgData = ctx.getImageData(0, 0, img.width, img.height);
+      var ctx = c.getContext("2d");
+      ctx.drawImage(img, 0, 0, img.width, img.height);
 
-    imgData = algo_fn(imgData);
+      var imgData = ctx.getImageData(0, 0, img.width, img.height);
 
-    ctx.putImageData(imgData,0,0);
+      imgData = algo_fn(imgData);
+
+      ctx.putImageData(imgData,0,0);
+    }
   };
 
   var process = function() {
@@ -196,7 +221,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     var submit = codeYours.child(childURL).push();
     $scope.saved.link = submit.name();
     $scope.yourModel[submit.name()] = {
-      user: $scope.user.username, code: $scope.aceModel
+      user: $scope.user.username, code: $scope.aceModel, callback: $scope.callbackSettings.callbackUrl
     };
   };
 

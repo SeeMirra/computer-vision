@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>sherecar.org | Computer Vision Exploratorium</title>
+    <title>sherecar.org</title>
     
     <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
@@ -9,7 +9,7 @@
     <link href="css/angular-slider.css" rel="stylesheet" type="text/css" />
     <link href="css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css" >
   </head>
-  <body ng-app="computerVision">
+  <body ng-app="computerVision" ng-controller="VisionCtrl">
     <nav class="navbar navbar-default" role="navigation">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -19,7 +19,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">ShereCar</a>
+        <a class="navbar-brand" href="#"><img src="static/sherecar-title.png" class="img-responsive" alt="Shere Car"></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
@@ -64,6 +64,7 @@
     
     <!-- Self Driving Vehicle -->
     <script type="text/javascript" src="js/shereapp.js" id="ace_code"></script>
+    <script type="text/javascript" src="js/shereServices.js"></script>
   </body>
 </html>
 
