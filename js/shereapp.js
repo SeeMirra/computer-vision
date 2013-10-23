@@ -22,21 +22,18 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
   $scope.details.discuss = 'http://www.sherecar.org/';
   $scope.details.feedback = 'https://github.com/Self-Driving-Vehicle/computer-vision/issues';
   
-  // Page properties
-  var base = document.getElementById('original');
-  var canvas = document.getElementById('myCanvas');
-  var context = canvas.getContext('2d');
   var saveBase = 'submits/';
-  
+
   // Angular models
   $scope.saved = {};
   $scope.saved.link = '';
   $scope.saved.base = 'http://vision.sherecar.org/vision/';
   $scope.autoUpdate = true;
   $scope.editorError = "";
-  $scope.useCallback = false;
-  $scope.callbackUrl = "";
-  $scope.postImageUrl = "";
+  $scope.callbackSettings = {};
+  $scope.callbackSettings.useCallback = false;
+  $scope.callbackSettings.callbackUrl = "";
+  $scope.callbackSettings.postImageUrl = "";
   
   $scope.playControls = '';
   $scope.showDescription = true;
@@ -75,7 +72,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   $scope.$watch('yourModel', function() {
     if (codeId) {
-      $scope.callbackUrl = $scope.yourModel[codeId]['callback'];
+      $scope.callbackSettings.callbackUrl = $scope.yourModel[codeId]['callback'];
       $scope.aceModel = $scope.yourModel[codeId]['code'];
     }
   }); 
@@ -169,14 +166,17 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
 
   var run_algo = function(algo_fn) {
     $scope.editorError = "";
-    if ($scope.useCallback) {
-      if ($scope.callbackUrl) {
+      debugger;
+    if ($scope.callbackSettings.useCallback) {
+      if ($scope.callbackSettings.callbackUrl) {
         var callbackPromise;
-        callbackPromise = serverProcessService.callServer($scope.callbackUrl, 'static/images/image'+$scope.img+'.png');
+        callbackPromise = serverProcessService.callServer($scope.callbackSettings.callbackUrl, 'static/images/image'+$scope.img+'.png');
 
         $q.all(callbackPromise).then(function (response) {
           //Txt file: /static/testURL.txt
-          $scope.postImageUrl = response;
+          $scope.callbackSettings.postImageUrl = response;
+        }, function(){
+          console.log("ARRRGH");
         });
       }
       else {
@@ -221,7 +221,7 @@ computerVision.controller('VisionCtrl', function ($scope, $routeParams, $timeout
     var submit = codeYours.child(childURL).push();
     $scope.saved.link = submit.name();
     $scope.yourModel[submit.name()] = {
-      user: $scope.user.username, code: $scope.aceModel, callback: $scope.callbackUrl
+      user: $scope.user.username, code: $scope.aceModel, callback: $scope.callbackSettings.callbackUrl
     };
   };
 
